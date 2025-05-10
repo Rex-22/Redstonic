@@ -1,5 +1,7 @@
 package com.raizunne.redstonic.Util;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.material.Alloy;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -26,23 +28,18 @@ public class EIOHelper {
     public static ItemStack blockVibrantium = null;
 
     public static void init() {
-        ingotVibrant = OreDictionary.getOres("ingotPhasedGold")
-            .get(0);
-        ingotSoularium = OreDictionary.getOres("ingotSoularium")
-            .get(0);
-        ingotEnergized = OreDictionary.getOres("ingotEnergeticAlloy")
-            .get(0);
-        ingotElectrical = OreDictionary.getOres("ingotElectricalSteel")
-            .get(0);
+
+        ingotVibrant = Alloy.PHASED_GOLD.getStackIngot();
+        ingotSoularium = Alloy.SOULARIUM.getStackIngot();
+        ingotEnergized = Alloy.ENERGETIC_ALLOY.getStackIngot();
+        ingotElectrical = Alloy.ELECTRICAL_STEEL.getStackIngot();
         etchingCrystal = new ItemStack(GameRegistry.findItem("EnderIO", "itemMaterial"), 1, 9);
         basicCapacitor = new ItemStack(GameRegistry.findItem("EnderIO", "itemBasicCapacitor"), 1, 0);
         doubleCapacitor = new ItemStack(GameRegistry.findItem("EnderIO", "itemBasicCapacitor"), 1, 1);
         octadicCapacitor = new ItemStack(GameRegistry.findItem("EnderIO", "itemBasicCapacitor"), 1, 2);
         basicGear = new ItemStack(GameRegistry.findItem("EnderIO", "itemMachinePart"), 1, 1);
-        blockEnergetic = OreDictionary.getOres("blockEnergeticAlloy")
-            .get(0);
-        blockVibrantium = OreDictionary.getOres("blockPhasedGold")
-            .get(0);
+        blockEnergetic = Alloy.ENERGETIC_ALLOY.getStackBlock();
+        blockVibrantium = Alloy.PHASED_GOLD.getStackBlock();
 
     }
 
