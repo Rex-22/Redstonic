@@ -1,9 +1,7 @@
 package com.raizunne.redstonic.Block;
 
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.TileEntity.TEDrillModifier;
-import com.raizunne.redstonic.TileEntity.TEHyperSmelter;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,7 +10,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import com.raizunne.redstonic.Redstonic;
+import com.raizunne.redstonic.TileEntity.TEHyperSmelter;
+
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -33,7 +34,14 @@ public class HyperSmelter extends BlockContainer {
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
         TEHyperSmelter tileentity = (TEHyperSmelter) world.getTileEntity(x, y, z);
         this.te = tileentity;
-        tileentity.getWorldObj().scheduleBlockUpdate(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord), 400);
+        tileentity.getWorldObj()
+            .scheduleBlockUpdate(
+                tileentity.xCoord,
+                tileentity.yCoord,
+                tileentity.zCoord,
+                tileentity.getWorldObj()
+                    .getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord),
+                400);
     }
 
     @Override
@@ -43,10 +51,10 @@ public class HyperSmelter extends BlockContainer {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TEHyperSmelter tile = (TEHyperSmelter)world.getTileEntity(x, y, z);
+        TEHyperSmelter tile = (TEHyperSmelter) world.getTileEntity(x, y, z);
         EntityItem item;
-        for(int i=0; i<tile.getSizeInventory(); i++){
-            if(tile.getStackInSlot(i)!=null){
+        for (int i = 0; i < tile.getSizeInventory(); i++) {
+            if (tile.getStackInSlot(i) != null) {
                 item = new EntityItem(world, x, y, z, tile.getStackInSlot(i));
                 world.spawnEntityInWorld(item);
             }
@@ -55,9 +63,10 @@ public class HyperSmelter extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-        if(!world.isRemote){
-            if(!player.isSneaking()){
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_,
+        float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+        if (!world.isRemote) {
+            if (!player.isSneaking()) {
                 FMLNetworkHandler.openGui(player, Redstonic.instance, 4, world, x, y, z);
             }
         }

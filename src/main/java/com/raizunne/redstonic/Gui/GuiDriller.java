@@ -1,14 +1,14 @@
 package com.raizunne.redstonic.Gui;
 
-import com.raizunne.redstonic.Gui.Container.ContainerDriller;
-import com.raizunne.redstonic.TileEntity.TEDrillModifier;
-import com.raizunne.redstonic.TileEntity.TEDriller;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import com.raizunne.redstonic.Gui.Container.ContainerDriller;
+import com.raizunne.redstonic.TileEntity.TEDriller;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -19,7 +19,7 @@ public class GuiDriller extends GuiContainer {
     TEDriller te;
     public static final ResourceLocation texture = new ResourceLocation("redstonic", "textures/gui/DrillerGUI.png");
 
-    public GuiDriller(InventoryPlayer invplayer, TEDriller tile){
+    public GuiDriller(InventoryPlayer invplayer, TEDriller tile) {
         super(new ContainerDriller(invplayer, tile));
         xSize = 176;
         ySize = 145;

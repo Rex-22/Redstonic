@@ -1,8 +1,5 @@
 package com.raizunne.redstonic.TileEntity;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -13,6 +10,10 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyContainerItem;
+import cofh.api.energy.IEnergyHandler;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -26,16 +27,17 @@ public class TEArmorModifier extends TileEntity implements IInventory, IEnergyHa
     int maxOut = 5000;
     int maxIn = 8000;
 
-    public TEArmorModifier(){
+    public TEArmorModifier() {
         items = new ItemStack[7];
         storage = new EnergyStorage(512000);
     }
 
     @Override
     public void updateEntity() {
-        if(getStackInSlot(0)!=null && getStackInSlot(0).getItem() instanceof IEnergyContainerItem){
-            IEnergyContainerItem energyItem = (IEnergyContainerItem)getStackInSlot(0).getItem();
-            if(!(energyItem.getEnergyStored(getStackInSlot(0))>=energyItem.getMaxEnergyStored(getStackInSlot(0))) && getEnergyStored(null)>0) {
+        if (getStackInSlot(0) != null && getStackInSlot(0).getItem() instanceof IEnergyContainerItem) {
+            IEnergyContainerItem energyItem = (IEnergyContainerItem) getStackInSlot(0).getItem();
+            if (!(energyItem.getEnergyStored(getStackInSlot(0)) >= energyItem.getMaxEnergyStored(getStackInSlot(0)))
+                && getEnergyStored(null) > 0) {
                 energyItem.receiveEnergy(getStackInSlot(0), maxOut, false);
                 takeEnergy(maxOut);
             }
@@ -56,10 +58,10 @@ public class TEArmorModifier extends TileEntity implements IInventory, IEnergyHa
     public ItemStack decrStackSize(int i, int count) {
         ItemStack itemstack = getStackInSlot(i);
 
-        if(itemstack != null){
-            if(itemstack.stackSize <= count){
+        if (itemstack != null) {
+            if (itemstack.stackSize <= count) {
                 setInventorySlotContents(i, null);
-            }else{
+            } else {
                 itemstack = itemstack.splitStack(count);
                 markDirty();
             }
@@ -109,7 +111,7 @@ public class TEArmorModifier extends TileEntity implements IInventory, IEnergyHa
 
     }
 
-    public int getPowerScaledProgress(int i){
+    public int getPowerScaledProgress(int i) {
         return getEnergyStored(null) * i / getMaxEnergyStored(null);
     }
 
@@ -127,7 +129,7 @@ public class TEArmorModifier extends TileEntity implements IInventory, IEnergyHa
 
             if (stack != null) {
                 NBTTagCompound item = new NBTTagCompound();
-                item.setByte("Slot", (byte)i);
+                item.setByte("Slot", (byte) i);
                 stack.writeToNBT(item);
                 items.appendTag(item);
             }
@@ -142,7 +144,7 @@ public class TEArmorModifier extends TileEntity implements IInventory, IEnergyHa
         NBTTagList items = compound.getTagList("Items", 10);
 
         for (int i = 0; i < items.tagCount(); i++) {
-            NBTTagCompound item = (NBTTagCompound)items.getCompoundTagAt(i);
+            NBTTagCompound item = (NBTTagCompound) items.getCompoundTagAt(i);
             int slot = item.getByte("Slot");
 
             if (slot >= 0 && slot < getSizeInventory()) {
@@ -168,7 +170,7 @@ public class TEArmorModifier extends TileEntity implements IInventory, IEnergyHa
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
         int energyReceived = Math.min(getMaxEnergyStored(null) - getEnergyStored(null), Math.min(maxIn, maxReceive));
 
-        if(!simulate){
+        if (!simulate) {
             addEnergy(energyReceived);
         }
         return energyReceived;
@@ -179,14 +181,15 @@ public class TEArmorModifier extends TileEntity implements IInventory, IEnergyHa
         return 0;
     }
 
-    public void takeEnergy(int i){
-        setEnergy(getEnergyStored(null)-i);
-    }
-    public void addEnergy(int i){
-        setEnergy(getEnergyStored(null)+i);
+    public void takeEnergy(int i) {
+        setEnergy(getEnergyStored(null) - i);
     }
 
-    public void setEnergy(int i){
+    public void addEnergy(int i) {
+        setEnergy(getEnergyStored(null) + i);
+    }
+
+    public void setEnergy(int i) {
         storage.setEnergyStored(i);
     }
 

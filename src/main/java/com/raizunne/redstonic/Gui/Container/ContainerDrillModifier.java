@@ -1,5 +1,11 @@
 package com.raizunne.redstonic.Gui.Container;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
 import com.raizunne.redstonic.Gui.Slot.SlotAugment;
 import com.raizunne.redstonic.Item.Drill.DrillAugment;
 import com.raizunne.redstonic.Item.Drill.DrillBody;
@@ -10,17 +16,10 @@ import com.raizunne.redstonic.Item.RedstonicSword;
 import com.raizunne.redstonic.Item.Sword.SwordAugment;
 import com.raizunne.redstonic.Item.Sword.SwordBlade;
 import com.raizunne.redstonic.Item.Sword.SwordHandle;
-import com.raizunne.redstonic.RedstonicItems;
 import com.raizunne.redstonic.TileEntity.TEDrillModifier;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -66,65 +65,68 @@ public class ContainerDrillModifier extends Container {
         ItemStack itemstack = null;
         Slot slot = (Slot) this.inventorySlots.get(par2);
 
-        if(slot != null && slot.getHasStack()) {
+        if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if(par2 < 35){
-                if(itemstack1.getItem() instanceof RedstonicDrill || itemstack1.getItem() instanceof RedstonicSword){
-                    if(!mergeItemStack(itemstack1, 36, 37, false)){
-                        if(!mergeItemStack(itemstack1, 9, 35, false)){
+            if (par2 < 35) {
+                if (itemstack1.getItem() instanceof RedstonicDrill || itemstack1.getItem() instanceof RedstonicSword) {
+                    if (!mergeItemStack(itemstack1, 36, 37, false)) {
+                        if (!mergeItemStack(itemstack1, 9, 35, false)) {
                             return null;
                         }
                     }
-                }else if(itemstack1.getItem() instanceof DrillHead || itemstack1.getItem() instanceof SwordBlade){
-                    if(!mergeItemStack(itemstack1, 37, 38, false)){
-                        if(!mergeItemStack(itemstack1, 9, 35, false)){
+                } else if (itemstack1.getItem() instanceof DrillHead || itemstack1.getItem() instanceof SwordBlade) {
+                    if (!mergeItemStack(itemstack1, 37, 38, false)) {
+                        if (!mergeItemStack(itemstack1, 9, 35, false)) {
                             return null;
                         }
                     }
-                }else if(itemstack1.getItem() instanceof DrillBody || itemstack1.getItem() instanceof SwordHandle){
-                    if(!mergeItemStack(itemstack1, 38, 39, false)){
-                        if(!mergeItemStack(itemstack1, 9, 35, false)){
+                } else if (itemstack1.getItem() instanceof DrillBody || itemstack1.getItem() instanceof SwordHandle) {
+                    if (!mergeItemStack(itemstack1, 38, 39, false)) {
+                        if (!mergeItemStack(itemstack1, 9, 35, false)) {
                             return null;
                         }
                     }
-                }else if(itemstack1.getItem() instanceof ItemBattery) {
+                } else if (itemstack1.getItem() instanceof ItemBattery) {
                     if (!mergeItemStack(itemstack1, 39, 40, false)) {
                         if (!mergeItemStack(itemstack1, 9, 35, false)) {
                             return null;
                         }
                     }
-                }else if(Loader.isModLoaded("ThermalExpansion")){
-                    if(itemstack1.isItemEqual(hardened) || itemstack1.isItemEqual(reinforced) || itemstack1.isItemEqual(resonant) || itemstack1.isItemEqual(creative)){
+                } else if (Loader.isModLoaded("ThermalExpansion")) {
+                    if (itemstack1.isItemEqual(hardened) || itemstack1.isItemEqual(reinforced)
+                        || itemstack1.isItemEqual(resonant)
+                        || itemstack1.isItemEqual(creative)) {
                         if (!mergeItemStack(itemstack1, 39, 40, false)) {
                             if (!mergeItemStack(itemstack1, 9, 35, false)) {
                                 return null;
                             }
                         }
                     }
-                }else if(itemstack1.getItem() instanceof DrillAugment || itemstack1.getItem() instanceof SwordAugment){
-                    if (!mergeItemStack(itemstack1, 40, 43, false)) {
-                        if (!mergeItemStack(itemstack1, 9, 35, false)) {
-                            return null;
+                } else
+                    if (itemstack1.getItem() instanceof DrillAugment || itemstack1.getItem() instanceof SwordAugment) {
+                        if (!mergeItemStack(itemstack1, 40, 43, false)) {
+                            if (!mergeItemStack(itemstack1, 9, 35, false)) {
+                                return null;
+                            }
+                        }
+                    } else {
+                        if (!mergeItemStack(itemstack1, 36, 43, false)) {
+                            if (!mergeItemStack(itemstack1, 9, 35, false)) {
+                                return null;
+                            }
                         }
                     }
-                }else{
-                    if(!mergeItemStack(itemstack1, 36, 43, false)){
-                        if(!mergeItemStack(itemstack1, 9, 35, false)){
-                            return null;
-                        }
-                    }
-                }
-            }else if(par2<9){
-                if(!mergeItemStack(itemstack1, 0, 9, false)){
+            } else if (par2 < 9) {
+                if (!mergeItemStack(itemstack1, 0, 9, false)) {
                     return null;
                 }
-            }else if(!mergeItemStack(itemstack1, 0, 35, false)){
+            } else if (!mergeItemStack(itemstack1, 0, 35, false)) {
                 return null;
             }
 
-            if(itemstack1.stackSize == 0) {
+            if (itemstack1.stackSize == 0) {
                 slot.putStack((ItemStack) null);
             } else {
                 slot.onSlotChanged();

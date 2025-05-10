@@ -1,15 +1,8 @@
 package com.raizunne.redstonic.Item;
 
-import com.google.common.eventbus.Subscribe;
-import com.raizunne.redstonic.Handler.ConfigHandler;
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.RedstonicItems;
-import com.raizunne.redstonic.Util.Lang;
-import com.raizunne.redstonic.Util.Util;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -27,20 +19,25 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import sun.security.krb5.Config;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.lwjgl.input.Keyboard;
+
+import com.raizunne.redstonic.Handler.ConfigHandler;
+import com.raizunne.redstonic.Redstonic;
+import com.raizunne.redstonic.RedstonicItems;
+import com.raizunne.redstonic.Util.Util;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Created by Raizunne as a part of Redstonic
  * on 05/04/2015, 01:21 PM.
  */
-public class RedstonicContainer extends Item{
+public class RedstonicContainer extends Item {
 
-    public RedstonicContainer(){
+    public RedstonicContainer() {
         setCreativeTab(Redstonic.redTab);
         setMaxStackSize(1);
         setNoRepair();
@@ -52,22 +49,24 @@ public class RedstonicContainer extends Item{
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
         NBTTagCompound nbt = stack.stackTagCompound;
-        if(stack.stackTagCompound==null){
+        if (stack.stackTagCompound == null) {
             stack.stackTagCompound = new NBTTagCompound();
             stack.stackTagCompound.setInteger("block", -1);
             stack.stackTagCompound.setInteger("blockMeta", 0);
             stack.stackTagCompound.setInteger("number", 0);
             stack.stackTagCompound.setBoolean("disabled", false);
-        }else{
-            if(entity instanceof EntityPlayer){
-                EntityPlayer player = (EntityPlayer)entity;
+        } else {
+            if (entity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entity;
                 Block block = Block.getBlockById(stack.stackTagCompound.getInteger("block"));
                 ItemStack theBlock = new ItemStack(block, 1, stack.stackTagCompound.getInteger("blockMeta"));
-                if(player.inventory.hasItemStack(theBlock) && nbt.getInteger("number")< ConfigHandler.containerMax && !stack.stackTagCompound.getBoolean("disabled")){
+                if (player.inventory.hasItemStack(theBlock) && nbt.getInteger("number") < ConfigHandler.containerMax
+                    && !stack.stackTagCompound.getBoolean("disabled")) {
                     player.inventory.decrStackSize(getInvNumber(player, theBlock), 1);
-                    nbt.setInteger("number", nbt.getInteger("number")+1);
+                    nbt.setInteger("number", nbt.getInteger("number") + 1);
                 }
-                if(stack.stackTagCompound.getInteger("block")!=-1 && stack.stackTagCompound.getInteger("number")==0){
+                if (stack.stackTagCompound.getInteger("block") != -1
+                    && stack.stackTagCompound.getInteger("number") == 0) {
                     stack.stackTagCompound.setInteger("block", -1);
                 }
             }
@@ -75,25 +74,26 @@ public class RedstonicContainer extends Item{
     }
 
     @SubscribeEvent
-    public void onPickUpItem(EntityItemPickupEvent event){
+    public void onPickUpItem(EntityItemPickupEvent event) {
         EntityPlayer player = event.entityPlayer;
         ItemStack picked = event.item.getEntityItem();
         boolean fuckingPicked = false;
         int number = picked.stackSize;
-        if(picked.getItem() instanceof ItemBlock){
+        if (picked.getItem() instanceof ItemBlock) {
             List<ItemStack> allContainers = getAllInPlayer(player, new ItemStack(RedstonicItems.RedContainer));
             Block blockerino = Block.getBlockFromItem(picked.getItem());
-            for(int i=0; i<allContainers.size(); i++){
+            for (int i = 0; i < allContainers.size(); i++) {
                 Block blockInContainer = Block.getBlockById(allContainers.get(i).stackTagCompound.getInteger("block"));
                 int quantity = allContainers.get(i).stackTagCompound.getInteger("number");
-                if(blockInContainer.equals(blockerino) && !allContainers.get(i).stackTagCompound.getBoolean("disabled") && allContainers.get(i).stackTagCompound.getInteger("number")<=ConfigHandler.containerMax){
-                    if(quantity<ConfigHandler.containerMax){
-                        if(quantity+number <= ConfigHandler.containerMax){
+                if (blockInContainer.equals(blockerino) && !allContainers.get(i).stackTagCompound.getBoolean("disabled")
+                    && allContainers.get(i).stackTagCompound.getInteger("number") <= ConfigHandler.containerMax) {
+                    if (quantity < ConfigHandler.containerMax) {
+                        if (quantity + number <= ConfigHandler.containerMax) {
                             allContainers.get(i).stackTagCompound.setInteger("number", quantity + number);
                             number = 0;
-                        }else if(quantity+number>ConfigHandler.containerMax){
+                        } else if (quantity + number > ConfigHandler.containerMax) {
                             allContainers.get(i).stackTagCompound.setInteger("number", ConfigHandler.containerMax);
-                            number = (quantity+number)-ConfigHandler.containerMax;
+                            number = (quantity + number) - ConfigHandler.containerMax;
                         }
                     }
                     fuckingPicked = true;
@@ -101,22 +101,24 @@ public class RedstonicContainer extends Item{
                 }
             }
         }
-        if(fuckingPicked)event.item.getEntityItem().stackSize = 0;
+        if (fuckingPicked) event.item.getEntityItem().stackSize = 0;
     }
 
-    public int getInvNumber(EntityPlayer player, ItemStack stack){
-        for(int i=0; i<player.inventory.getSizeInventory(); i++){
-            if(player.inventory.getStackInSlot(i)!=null && player.inventory.getStackInSlot(i).isItemEqual(stack)){
+    public int getInvNumber(EntityPlayer player, ItemStack stack) {
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            if (player.inventory.getStackInSlot(i) != null && player.inventory.getStackInSlot(i)
+                .isItemEqual(stack)) {
                 return i;
             }
         }
         return 0;
     }
 
-    public List<ItemStack> getAllInPlayer(EntityPlayer player, ItemStack stack){
+    public List<ItemStack> getAllInPlayer(EntityPlayer player, ItemStack stack) {
         List<ItemStack> all = new ArrayList<ItemStack>();
-        for(int i=0; i<player.inventory.getSizeInventory(); i++){
-            if(player.inventory.getStackInSlot(i)!=null && player.inventory.getStackInSlot(i).isItemEqual(stack)){
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            if (player.inventory.getStackInSlot(i) != null && player.inventory.getStackInSlot(i)
+                .isItemEqual(stack)) {
                 all.add(player.inventory.getStackInSlot(i));
             }
         }
@@ -125,13 +127,16 @@ public class RedstonicContainer extends Item{
 
     @Override
     public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
-        MovingObjectPosition pos = this.getMovingObjectPositionFromPlayer(entityLiving.worldObj, (EntityPlayer)entityLiving, true);
-        if(pos!=null){return false;}
-        if(entityLiving.isSneaking()){
-            if(stack.stackTagCompound.getBoolean("disabled")){
+        MovingObjectPosition pos = this
+            .getMovingObjectPositionFromPlayer(entityLiving.worldObj, (EntityPlayer) entityLiving, true);
+        if (pos != null) {
+            return false;
+        }
+        if (entityLiving.isSneaking()) {
+            if (stack.stackTagCompound.getBoolean("disabled")) {
                 stack.stackTagCompound.setBoolean("disabled", false);
                 entityLiving.playSound("note.harp", 1F, 1F);
-            }else{
+            } else {
                 stack.stackTagCompound.setBoolean("disabled", true);
                 entityLiving.playSound("note.bass", 0.5F, 1F);
             }
@@ -142,27 +147,34 @@ public class RedstonicContainer extends Item{
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
         NBTTagCompound nbt = stack.stackTagCompound;
-        if(stack.stackTagCompound!=null){
-            String name = nbt.getInteger("block")==-1?"Empty" : new ItemStack(Item.getItemById(nbt.getInteger("block"))).getDisplayName();
-            if(nbt.getBoolean("disabled"))list.add(EnumChatFormatting.BLUE + "Disabled ");
+        if (stack.stackTagCompound != null) {
+            String name = nbt.getInteger("block") == -1 ? "Empty"
+                : new ItemStack(Item.getItemById(nbt.getInteger("block"))).getDisplayName();
+            if (nbt.getBoolean("disabled")) list.add(EnumChatFormatting.BLUE + "Disabled ");
             list.add(EnumChatFormatting.YELLOW + "Contains: " + EnumChatFormatting.GRAY + name);
-            list.add(EnumChatFormatting.YELLOW + "Quantity: " + EnumChatFormatting.GRAY + nbt.getInteger("number") + "/" + ConfigHandler.containerMax);
+            list.add(
+                EnumChatFormatting.YELLOW + "Quantity: "
+                    + EnumChatFormatting.GRAY
+                    + nbt.getInteger("number")
+                    + "/"
+                    + ConfigHandler.containerMax);
             list.add(EnumChatFormatting.DARK_GRAY + "Will void extra items when full.");
-            if(nbt.getInteger("block")==-1){
+            if (nbt.getInteger("block") == -1) {
                 list.add("Set contents by placing it in a");
                 list.add("crafting table with the desired block to store.");
             }
-            if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                if(nbt.getBoolean("disabled")){
-                    list.add(EnumChatFormatting.GRAY + "Disabled: " + EnumChatFormatting.DARK_GRAY + "Will not suck items.");
-                }else{
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                if (nbt.getBoolean("disabled")) {
+                    list.add(
+                        EnumChatFormatting.GRAY + "Disabled: " + EnumChatFormatting.DARK_GRAY + "Will not suck items.");
+                } else {
                     list.add(EnumChatFormatting.GRAY + "Sneak left-click to disable.");
                     list.add(EnumChatFormatting.GRAY + "Right click while disabled to retrieve items.");
                 }
-            }else{
+            } else {
                 list.add(Util.ItemShiftInfo);
             }
-        }else{
+        } else {
             list.add("Stores up to " + ConfigHandler.containerMax + " items.");
             list.add("Set item by placing it in a crafting table");
             list.add("with the selected item.");
@@ -170,51 +182,66 @@ public class RedstonicContainer extends Item{
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
-        if(stack.stackTagCompound.getBoolean("disabled") && stack.stackTagCompound.getInteger("number")>0){
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (stack.stackTagCompound.getBoolean("disabled") && stack.stackTagCompound.getInteger("number") > 0) {
             Block block = Block.getBlockById(stack.stackTagCompound.getInteger("block"));
             int number = stack.stackTagCompound.getInteger("number");
-            if(number>=64){
-                if(player.inventory.addItemStackToInventory(new ItemStack(block, 64, stack.stackTagCompound.getInteger("blockMeta")))) {
+            if (number >= 64) {
+                if (player.inventory.addItemStackToInventory(
+                    new ItemStack(block, 64, stack.stackTagCompound.getInteger("blockMeta")))) {
                     stack.stackTagCompound.setInteger("number", number - 64);
                     player.playSound("random.burp", 0.5F, 2F);
                 }
-            }else{
-                if(player.inventory.addItemStackToInventory(new ItemStack(block, number, stack.stackTagCompound.getInteger("blockMeta")))){
+            } else {
+                if (player.inventory.addItemStackToInventory(
+                    new ItemStack(block, number, stack.stackTagCompound.getInteger("blockMeta")))) {
                     stack.stackTagCompound.setInteger("number", 0);
                     player.playSound("random.burp", 0.5F, 2F);
                 }
             }
             return stack;
         }
-        if(stack.stackTagCompound.getInteger("number")>0) {
+        if (stack.stackTagCompound.getInteger("number") > 0) {
             MovingObjectPosition pos = this.getMovingObjectPositionFromPlayer(world, player, true);
-            if(pos==null){return stack;}
-            placeBlock(Block.getBlockById(stack.stackTagCompound.getInteger("block")), stack.stackTagCompound.getInteger("blockMeta"), world, player);
+            if (pos == null) {
+                return stack;
+            }
+            placeBlock(
+                Block.getBlockById(stack.stackTagCompound.getInteger("block")),
+                stack.stackTagCompound.getInteger("blockMeta"),
+                world,
+                player);
             stack.stackTagCompound.setInteger("number", stack.stackTagCompound.getInteger("number") - 1);
         }
         return stack;
     }
 
-    public void returnStack(ItemStack stack, EntityPlayer player){
+    public void returnStack(ItemStack stack, EntityPlayer player) {
         Block block = Block.getBlockById(stack.stackTagCompound.getInteger("block"));
-        player.inventory.addItemStackToInventory(new ItemStack(block, stack.stackTagCompound.getInteger("blockMeta"), 64));
+        player.inventory
+            .addItemStackToInventory(new ItemStack(block, stack.stackTagCompound.getInteger("blockMeta"), 64));
     }
 
-    public static class Icon{
+    public static class Icon {
+
         public static IIcon icon;
         public static IIcon xOverlay;
     }
 
-    public void placeBlock(Block block, int meta, World world, EntityPlayer player){
+    public void placeBlock(Block block, int meta, World world, EntityPlayer player) {
         MovingObjectPosition pos = this.getMovingObjectPositionFromPlayer(world, player, true);
-        if(pos==null){return;}
+        if (pos == null) {
+            return;
+        }
         String sound = block.stepSound.func_150496_b();
-        if(pos!=null && pos.typeOfHit== MovingObjectPosition.MovingObjectType.BLOCK){
-            int posX = pos.blockX; int posY = pos.blockY; int posZ = pos.blockZ;
+        if (pos != null && pos.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            int posX = pos.blockX;
+            int posY = pos.blockY;
+            int posZ = pos.blockZ;
             switch (pos.sideHit) {
                 case 0:
-                    if(world.getBlock(posX, posY-1, posZ)== Blocks.air || world.getBlock(posX, posY-1, posZ) instanceof BlockLiquid) {
+                    if (world.getBlock(posX, posY - 1, posZ) == Blocks.air
+                        || world.getBlock(posX, posY - 1, posZ) instanceof BlockLiquid) {
                         if (!world.isRemote) {
                             world.setBlock(posX, posY - 1, posZ, block, meta, 2);
                             world.scheduleBlockUpdate(posX, posY - 1, posZ, block, meta);
@@ -224,7 +251,8 @@ public class RedstonicContainer extends Item{
                     }
                     break;
                 case 1:
-                    if(world.getBlock(posX, posY+1, posZ)==Blocks.air || world.getBlock(posX, posY+1, posZ) instanceof BlockLiquid) {
+                    if (world.getBlock(posX, posY + 1, posZ) == Blocks.air
+                        || world.getBlock(posX, posY + 1, posZ) instanceof BlockLiquid) {
                         if (!world.isRemote) {
                             world.setBlock(posX, posY + 1, posZ, block, meta, 2);
                         }
@@ -233,7 +261,8 @@ public class RedstonicContainer extends Item{
                     }
                     break;
                 case 2:
-                    if(world.getBlock(posX, posY, posZ-1)==Blocks.air || world.getBlock(posX, posY, posZ-1) instanceof BlockLiquid) {
+                    if (world.getBlock(posX, posY, posZ - 1) == Blocks.air
+                        || world.getBlock(posX, posY, posZ - 1) instanceof BlockLiquid) {
                         if (!world.isRemote) {
                             world.setBlock(posX, posY, posZ - 1, block, meta, 2);
                             world.scheduleBlockUpdate(posX, posY, posZ - 1, block, meta);
@@ -243,7 +272,8 @@ public class RedstonicContainer extends Item{
                     }
                     break;
                 case 3:
-                    if(world.getBlock(posX, posY, posZ+1)==Blocks.air || world.getBlock(posX, posY, posZ+1) instanceof BlockLiquid){
+                    if (world.getBlock(posX, posY, posZ + 1) == Blocks.air
+                        || world.getBlock(posX, posY, posZ + 1) instanceof BlockLiquid) {
                         if (!world.isRemote) {
                             world.setBlock(posX, posY, posZ + 1, block, meta, 2);
                             world.scheduleBlockUpdate(posX, posY, posZ + 1, block, meta);
@@ -253,7 +283,8 @@ public class RedstonicContainer extends Item{
                     }
                     break;
                 case 4:
-                    if(world.getBlock(posX-1, posY, posZ)==Blocks.air || world.getBlock(posX-1, posY, posZ) instanceof BlockLiquid) {
+                    if (world.getBlock(posX - 1, posY, posZ) == Blocks.air
+                        || world.getBlock(posX - 1, posY, posZ) instanceof BlockLiquid) {
                         if (!world.isRemote) {
                             world.setBlock(posX - 1, posY, posZ, block, meta, 2);
                             world.scheduleBlockUpdate(posX - 1, posY, posZ, block, meta);
@@ -263,7 +294,8 @@ public class RedstonicContainer extends Item{
                     }
                     break;
                 case 5:
-                    if(world.getBlock(posX+1, posY, posZ)==Blocks.air || world.getBlock(posX+1, posY, posZ) instanceof BlockLiquid) {
+                    if (world.getBlock(posX + 1, posY, posZ) == Blocks.air
+                        || world.getBlock(posX + 1, posY, posZ) instanceof BlockLiquid) {
                         if (!world.isRemote) {
                             world.setBlock(posX + 1, posY, posZ, block, meta, 2);
                             world.scheduleBlockUpdate(posX + 1, posY, posZ, block, meta);

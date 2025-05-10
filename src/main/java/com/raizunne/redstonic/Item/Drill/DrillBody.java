@@ -1,28 +1,28 @@
 package com.raizunne.redstonic.Item.Drill;
 
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.Util.Util;
-import cpw.mods.fml.common.Loader;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import org.lwjgl.input.Keyboard;
 
-import java.util.List;
+import com.raizunne.redstonic.Redstonic;
+import com.raizunne.redstonic.Util.Util;
+
+import cpw.mods.fml.common.Loader;
 
 /**
  * Created by Raizunne as a part of Redstonic
  * on 03/02/2015, 09:52 PM.
  */
-public class DrillBody extends Item{
+public class DrillBody extends Item {
 
     int material;
     IIcon[] body;
 
-    public DrillBody(int material){
+    public DrillBody(int material) {
         this.material = material;
         setCreativeTab(Redstonic.redTab);
         setMaxStackSize(1);
@@ -32,15 +32,23 @@ public class DrillBody extends Item{
 
     @Override
     public String getUnlocalizedName() {
-        switch(material){
-            case 0: return "UnknownDrillBody";
-            case 1: return "IronDrillBody";
-            case 2: return "ElectrumDrillBody";
-            case 3: return "EnderiumDrillBody";
-            case 4: return "UltimateDrillBody";
-            case 5: return "EnergeticDrillBody";
-            case 6: return "VibrantDrillBody";
-            default: return "UnknownDrillBody";
+        switch (material) {
+            case 0:
+                return "UnknownDrillBody";
+            case 1:
+                return "IronDrillBody";
+            case 2:
+                return "ElectrumDrillBody";
+            case 3:
+                return "EnderiumDrillBody";
+            case 4:
+                return "UltimateDrillBody";
+            case 5:
+                return "EnergeticDrillBody";
+            case 6:
+                return "VibrantDrillBody";
+            default:
+                return "UnknownDrillBody";
         }
     }
 
@@ -52,9 +60,9 @@ public class DrillBody extends Item{
                 list.add(info[i]);
             }
         }
-        if((material==2 || material==3) && !Loader.isModLoaded("ThermalExpansion")){
+        if ((material == 2 || material == 3) && !Loader.isModLoaded("ThermalExpansion")) {
             list.add(Util.missingTE);
-        }else if((material==5 || material==6) && !Loader.isModLoaded("EnderIO")){
+        } else if ((material == 5 || material == 6) && !Loader.isModLoaded("EnderIO")) {
             list.add(Util.missingEIO);
         }
     }

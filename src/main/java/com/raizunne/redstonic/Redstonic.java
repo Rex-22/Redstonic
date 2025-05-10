@@ -1,11 +1,19 @@
 package com.raizunne.redstonic;
 
-/**
- * Created by Raizunne as a part of Redstonic
- * on 03/02/2015, 09:47 PM.
- */
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 
-import com.raizunne.redstonic.Handler.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.raizunne.redstonic.Handler.ConfigHandler;
+import com.raizunne.redstonic.Handler.GUIHandler;
+import com.raizunne.redstonic.Handler.RedstonicCommands;
+import com.raizunne.redstonic.Handler.RedstonicEventHandler;
 import com.raizunne.redstonic.Item.RedstonicContainer;
 import com.raizunne.redstonic.Network.PacketDrill;
 import com.raizunne.redstonic.Network.PacketDriller;
@@ -16,6 +24,7 @@ import com.raizunne.redstonic.TileEntity.TEDriller;
 import com.raizunne.redstonic.TileEntity.TEHyperSmelter;
 import com.raizunne.redstonic.Util.EIOHelper;
 import com.raizunne.redstonic.Util.KeyBinds;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -26,36 +35,34 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.util.EnumHelper;
 
-import static com.raizunne.redstonic.Handler.RedstonicCommands.*;
-
-@Mod(modid = Redstonic.MODID, version = Redstonic.VERSION, dependencies = "after:ThermalExpansion;after:EnderIO")
+@Mod(modid = Redstonic.MODID, version = Tags.VERSION, name = "Redstonic", acceptedMinecraftVersions = "[1.7.10]")
 public class Redstonic {
 
     public static final String MODID = "Redstonic";
-    public static final String VERSION = "1.4.8";
+    public static final Logger LOG = LogManager.getLogger(MODID);
 
     @Mod.Instance
     public static Redstonic instance;
-    @SidedProxy(clientSide = "com.raizunne.redstonic.Proxy.ClientProxy", serverSide = "com.raizunne.redstonic.Proxy.CommonProxy")
+    @SidedProxy(
+        clientSide = "com.raizunne.redstonic.Proxy.ClientProxy",
+        serverSide = "com.raizunne.redstonic.Proxy.CommonProxy")
     public static CommonProxy proxy;
     public static SimpleNetworkWrapper network;
     public static Configuration configFile;
-    public static ItemArmor.ArmorMaterial RedstonicMaterial = EnumHelper.addArmorMaterial("RedstonicArmorMaterial", 33, new int[]{1,1,1,1}, 0);
+    public static ItemArmor.ArmorMaterial RedstonicMaterial = EnumHelper
+        .addArmorMaterial("RedstonicArmorMaterial", 33, new int[] { 1, 1, 1, 1 }, 0);
 
-    public static CreativeTabs redTab = new CreativeTabs("Redstonic"){
+    public static CreativeTabs redTab = new CreativeTabs("Redstonic") {
+
         @Override
-        public Item getTabIconItem() {return RedstonicItems.RedDrill;}
+        public Item getTabIconItem() {
+            return RedstonicItems.RedDrill;
+        }
     };
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent e){
+    public void preInit(FMLPreInitializationEvent e) {
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel("redstonic");
         Redstonic.network.registerMessage(PacketDrill.Handler.class, PacketDrill.class, 0, Side.SERVER);
@@ -66,14 +73,14 @@ public class Redstonic {
         MinecraftForge.EVENT_BUS.register(new RedstonicContainer());
         MinecraftForge.EVENT_BUS.register(new KeyBinds());
 
-        if(Loader.isModLoaded("EnderIO")){
+        if (Loader.isModLoaded("EnderIO")) {
             EIOHelper.init();
         }
 
         RedstonicItems.init();
         RedstonicBlocks.init();
         RedstonicRecipes.init();
-//        KeyBinds.init();
+        // KeyBinds.init();
         proxy.initRenderers();
 
         GameRegistry.registerTileEntity(TEDrillModifier.class, "TEDrillModifier");
@@ -91,15 +98,13 @@ public class Redstonic {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
     }
 
-    public void load(FMLInitializationEvent event){
+    public void load(FMLInitializationEvent event) {
         new GUIHandler();
     }
 
     @Mod.EventHandler
-    public void serverLoad(FMLServerStartingEvent event)
-    {
+    public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new RedstonicCommands().new RemoveMessages());
         event.registerServerCommand(new RedstonicCommands().new Redstonic());
     }
-
 }

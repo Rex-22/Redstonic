@@ -4,18 +4,19 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 /**
  * Created by Raizunne as a part of Redstonic
  * on 11/02/2015, 04:01 PM.
  */
-public class ItemDrillModifier implements IItemRenderer{
+public class ItemDrillModifier implements IItemRenderer {
 
     TileEntitySpecialRenderer render;
     private TileEntity entity;
 
-    public ItemDrillModifier(TileEntitySpecialRenderer render, TileEntity entity){
+    public ItemDrillModifier(TileEntitySpecialRenderer render, TileEntity entity) {
         this.entity = entity;
         this.render = render;
     }
@@ -31,8 +32,8 @@ public class ItemDrillModifier implements IItemRenderer{
     }
 
     @Override
-    public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
-        switch(type){
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        switch (type) {
             case EQUIPPED:
                 GL11.glTranslatef(0F, 0.3F, 0F);
                 break;

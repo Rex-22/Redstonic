@@ -1,30 +1,5 @@
 package com.raizunne.redstonic.Item;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.raizunne.redstonic.Handler.RedstonicWorldData;
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.Util.NBTHelper;
-import com.raizunne.redstonic.Util.Util;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.SaveHandler;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,7 +8,23 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonParser;
+import com.raizunne.redstonic.Handler.RedstonicWorldData;
+import com.raizunne.redstonic.Redstonic;
+import com.raizunne.redstonic.Util.Util;
+
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -41,7 +32,7 @@ import java.util.Random;
  */
 public class RedstonicMessanger extends Item {
 
-    public RedstonicMessanger(){
+    public RedstonicMessanger() {
         setUnlocalizedName("RedstonicMessanger");
         setMaxStackSize(1);
         setCreativeTab(Redstonic.redTab);
@@ -54,18 +45,22 @@ public class RedstonicMessanger extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if(player.isSneaking()){
-            sendMessage(player, player.getDisplayName(), new ItemStack[]{new ItemStack(Items.apple, 69), new ItemStack(Items.potato, 69)});
+        if (player.isSneaking()) {
+            sendMessage(
+                player,
+                player.getDisplayName(),
+                new ItemStack[] { new ItemStack(Items.apple, 69), new ItemStack(Items.potato, 69) });
             getCratesFromPlayer(player, world);
             System.out.println(stack.stackTagCompound);
             return stack;
         }
 
-        FMLNetworkHandler.openGui(player, Redstonic.instance, 7, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        FMLNetworkHandler
+            .openGui(player, Redstonic.instance, 7, world, (int) player.posX, (int) player.posY, (int) player.posZ);
         return stack;
     }
 
-    public static void sendMessage(EntityPlayer sender, String playerName, ItemStack[] stack){
+    public static void sendMessage(EntityPlayer sender, String playerName, ItemStack[] stack) {
         RedstonicWorldData worldData = RedstonicWorldData.get(sender.getEntityWorld());
         NBTTagCompound worldTag = worldData.getData();
         NBTTagList playerCrates = worldTag.getTagList(playerName.toLowerCase(), 10);
@@ -80,32 +75,35 @@ public class RedstonicMessanger extends Item {
         worldData.markDirty();
     }
 
-    public static void resetMessages(String sender, World world){
+    public static void resetMessages(String sender, World world) {
         RedstonicWorldData worldData = RedstonicWorldData.get(world);
         NBTTagCompound worldTag = worldData.getData();
         NBTTagList playerCrates = worldTag.getTagList(sender.toLowerCase(), 10);
-//        for(int i=0; i<playerCrates.tagCount(); i++){
-//            playerCrates.removeTag(i);
-//        }
+        // for(int i=0; i<playerCrates.tagCount(); i++){
+        // playerCrates.removeTag(i);
+        // }
         worldTag.removeTag(sender);
         worldData.markDirty();
     }
 
-    public static List<ItemStack> getCratesFromPlayer(EntityPlayer player, World world){
+    public static List<ItemStack> getCratesFromPlayer(EntityPlayer player, World world) {
         List<ItemStack> crates = new ArrayList<ItemStack>();
         RedstonicWorldData worldData = RedstonicWorldData.get(player.getEntityWorld());
         NBTTagCompound worldTag = worldData.getData();
-        NBTTagList playerCrates = worldTag.getTagList(player.getDisplayName().toLowerCase(), 10);
+        NBTTagList playerCrates = worldTag.getTagList(
+            player.getDisplayName()
+                .toLowerCase(),
+            10);
 
         System.out.println(playerCrates);
 
-        for(int i=0; i<playerCrates.tagCount(); i++){
+        for (int i = 0; i < playerCrates.tagCount(); i++) {
             crates.add(ItemStack.loadItemStackFromNBT(playerCrates.getCompoundTagAt(i)));
         }
         return crates;
     }
 
-    public String getNameFromUUID(String uuid){
+    public String getNameFromUUID(String uuid) {
         try {
             URL url = new URL("https://raw.githubusercontent.com/Raizunne/Redstonic/master/src/versions/changelog.txt");
         } catch (MalformedURLException e) {
@@ -114,21 +112,26 @@ public class RedstonicMessanger extends Item {
         return "fuck";
     }
 
-    public String getUUIDFromName(String name){
+    public String getUUIDFromName(String name) {
         try {
-            URL url = new URL("https://api.mojang.com/users/profiles/minecraft/"+name);
+            URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
             BufferedReader read = new BufferedReader(new InputStreamReader(url.openStream(), Charset.forName("UTF-8")));
             int cp;
             StringBuilder builder = new StringBuilder();
-            while((cp=read.read())!= -1){
-                builder.append((char)cp);
+            while ((cp = read.read()) != -1) {
+                builder.append((char) cp);
             }
             String text = builder.toString();
             JsonElement json = new JsonParser().parse(text);
-            if(json instanceof JsonNull){
+            if (json instanceof JsonNull) {
                 return null;
-            }else{
-                return json.getAsJsonObject().get("id").getAsString().replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
+            } else {
+                return json.getAsJsonObject()
+                    .get("id")
+                    .getAsString()
+                    .replaceFirst(
+                        "([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)",
+                        "$1-$2-$3-$4-$5");
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();

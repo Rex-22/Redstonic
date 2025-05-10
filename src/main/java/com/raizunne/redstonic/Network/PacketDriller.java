@@ -1,12 +1,14 @@
 package com.raizunne.redstonic.Network;
 
+import net.minecraft.tileentity.TileEntity;
+
 import com.raizunne.redstonic.TileEntity.TEDrillModifier;
 import com.raizunne.redstonic.TileEntity.TEDriller;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -19,11 +21,11 @@ public class PacketDriller implements IMessage {
     private int z;
     private int head;
 
-    public PacketDriller(){
+    public PacketDriller() {
 
     }
 
-    public PacketDriller(TEDriller te){
+    public PacketDriller(TEDriller te) {
         x = te.xCoord;
         y = te.yCoord;
         z = te.zCoord;
@@ -47,11 +49,13 @@ public class PacketDriller implements IMessage {
     }
 
     public static class Handler implements IMessageHandler<PacketDriller, IMessage> {
+
         @Override
         public IMessage onMessage(PacketDriller message, MessageContext ctx) {
-            TileEntity tile = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
-            if(tile instanceof TEDrillModifier){
-                TEDriller modifier =  (TEDriller)tile;
+            TileEntity tile = ctx.getServerHandler().playerEntity.worldObj
+                .getTileEntity(message.x, message.y, message.z);
+            if (tile instanceof TEDrillModifier) {
+                TEDriller modifier = (TEDriller) tile;
                 modifier.setHead(message.head);
                 ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(message.x, message.y, message.z);
             }

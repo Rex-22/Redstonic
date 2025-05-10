@@ -1,11 +1,12 @@
 package com.raizunne.redstonic.Util;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -18,27 +19,48 @@ public class TEHelper {
     }
 
     public static ItemStack capacitorLead = new ItemStack(GameRegistry.findItem("ThermalExpansion", "capacitor"), 1, 2);
-    public static ItemStack capacitorHardened = new ItemStack(GameRegistry.findItem("ThermalExpansion", "capacitor"), 1, 3);
-    public static ItemStack capacitorRedstone = new ItemStack(GameRegistry.findItem("ThermalExpansion", "capacitor"), 1, 4);
-    public static ItemStack capacitorResonant = new ItemStack(GameRegistry.findItem("ThermalExpansion", "capacitor"), 1, 5);
+    public static ItemStack capacitorHardened = new ItemStack(
+        GameRegistry.findItem("ThermalExpansion", "capacitor"),
+        1,
+        3);
+    public static ItemStack capacitorRedstone = new ItemStack(
+        GameRegistry.findItem("ThermalExpansion", "capacitor"),
+        1,
+        4);
+    public static ItemStack capacitorResonant = new ItemStack(
+        GameRegistry.findItem("ThermalExpansion", "capacitor"),
+        1,
+        5);
     public static ItemStack capacitorCreative = GameRegistry.findItemStack("ThermalExpansion", "capacitorCreative", 1);
     public static ItemStack coilGold = new ItemStack(GameRegistry.findItem("ThermalExpansion", "material"), 1, 1);
     public static ItemStack coilSilver = new ItemStack(GameRegistry.findItem("ThermalExpansion", "material"), 1, 2);
     public static ItemStack coilElectrum = new ItemStack(GameRegistry.findItem("ThermalExpansion", "material"), 1, 3);
     public static ItemStack gearIron = new ItemStack(GameRegistry.findItem("ThermalFoundation", "material"), 1, 12);
     public static ItemStack gearInvar = new ItemStack(GameRegistry.findItem("ThermalFoundation", "material"), 1, 136);
-    public static ItemStack gearElectrum = new ItemStack(GameRegistry.findItem("ThermalFoundation", "material"), 1, 135);
-    public static ItemStack gearEnderium = new ItemStack(GameRegistry.findItem("ThermalFoundation", "material"), 1, 140);
+    public static ItemStack gearElectrum = new ItemStack(
+        GameRegistry.findItem("ThermalFoundation", "material"),
+        1,
+        135);
+    public static ItemStack gearEnderium = new ItemStack(
+        GameRegistry.findItem("ThermalFoundation", "material"),
+        1,
+        140);
     public static ItemStack gearShiny = new ItemStack(GameRegistry.findItem("ThermalFoundation", "material"), 1, 140);
     public static ItemStack hardGlass = new ItemStack(GameRegistry.findBlock("ThermalExpansion", "blockGlass"));
-    public static ItemStack ingotInvar = OreDictionary.getOres("ingotInvar").get(0);
-    public static ItemStack ingotElectrum = OreDictionary.getOres("ingotElectrum").get(0);
-    public static ItemStack ingotEnderium = OreDictionary.getOres("ingotEnderium").get(0);
-    public static ItemStack ingotLumium = OreDictionary.getOres("ingotLumium").get(0);
-    public static ItemStack blockEnderium = OreDictionary.getOres("blockEnderium").get(0);
-    public static ItemStack blockElectrum = OreDictionary.getOres("blockElectrum").get(0);
+    public static ItemStack ingotInvar = OreDictionary.getOres("ingotInvar")
+        .get(0);
+    public static ItemStack ingotElectrum = OreDictionary.getOres("ingotElectrum")
+        .get(0);
+    public static ItemStack ingotEnderium = OreDictionary.getOres("ingotEnderium")
+        .get(0);
+    public static ItemStack ingotLumium = OreDictionary.getOres("ingotLumium")
+        .get(0);
+    public static ItemStack blockEnderium = OreDictionary.getOres("blockEnderium")
+        .get(0);
+    public static ItemStack blockElectrum = OreDictionary.getOres("blockElectrum")
+        .get(0);
 
-	/* Furnace */
+    /* Furnace */
     public static void addFurnaceRecipe(int energy, ItemStack input, ItemStack output) {
 
         if (input == null || output == null) {
@@ -74,12 +96,14 @@ public class TEHelper {
         addPulverizerRecipe(energy, input, primaryOutput, null, 0);
     }
 
-    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput,
+        ItemStack secondaryOutput) {
 
         addPulverizerRecipe(energy, input, primaryOutput, secondaryOutput, 100);
     }
 
-    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput,
+        ItemStack secondaryOutput, int secondaryChance) {
 
         if (input == null || primaryOutput == null) {
             return;
@@ -124,12 +148,14 @@ public class TEHelper {
         addSawmillRecipe(energy, input, primaryOutput, null, 0);
     }
 
-    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput,
+        ItemStack secondaryOutput) {
 
         addSawmillRecipe(energy, input, primaryOutput, secondaryOutput, 100);
     }
 
-    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput,
+        int secondaryChance) {
 
         if (input == null || primaryOutput == null) {
             return;
@@ -169,18 +195,20 @@ public class TEHelper {
     }
 
     /* Smelter */
-    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
+        ItemStack primaryOutput) {
 
         addSmelterRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
     }
 
-    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
+    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
+        ItemStack primaryOutput, ItemStack secondaryOutput) {
 
         addSmelterRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
     }
 
-    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-                                        int secondaryChance) {
+    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
+        ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
         if (primaryInput == null || secondaryInput == null || primaryOutput == null) {
             return;
@@ -223,7 +251,8 @@ public class TEHelper {
     }
 
     /**
-     * Use this to register an Ore TYPE as a "Blast" recipe - it will require Pyrotheum Dust to smelt. Do not add the prefix. This is an opt-in for ores which
+     * Use this to register an Ore TYPE as a "Blast" recipe - it will require Pyrotheum Dust to smelt. Do not add the
+     * prefix. This is an opt-in for ores which
      * do NOT have vanilla furnace recipes.
      * <p/>
      * Ex: "Steel" or "ElectrumFlux", not "dustSteel" or "dustElectrumFlux"
@@ -271,7 +300,8 @@ public class TEHelper {
     }
 
     /* Transposer */
-    public static void addTransposerFill(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
+    public static void addTransposerFill(int energy, ItemStack input, ItemStack output, FluidStack fluid,
+        boolean reversible) {
 
         if (input == null || output == null || fluid == null) {
             return;
@@ -291,7 +321,8 @@ public class TEHelper {
         FMLInterModComms.sendMessage("ThermalExpansion", "TransposerFillRecipe", toSend);
     }
 
-    public static void addTransposerExtract(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
+    public static void addTransposerExtract(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance,
+        boolean reversible) {
 
         if (input == null || output == null || fluid == null) {
             return;
@@ -371,18 +402,20 @@ public class TEHelper {
     }
 
     /* Insolator */
-    public static void addInsolatorRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+    public static void addInsolatorRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
+        ItemStack primaryOutput) {
 
         addInsolatorRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
     }
 
-    public static void addInsolatorRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
+    public static void addInsolatorRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
+        ItemStack primaryOutput, ItemStack secondaryOutput) {
 
         addInsolatorRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
     }
 
-    public static void addInsolatorRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-                                          int secondaryChance) {
+    public static void addInsolatorRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
+        ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
         if (primaryInput == null || secondaryInput == null || primaryOutput == null) {
             return;
@@ -428,7 +461,7 @@ public class TEHelper {
      * DYNAMOS
      */
 
-	/* Magmatic */
+    /* Magmatic */
     public static void addMagmaticFuel(String fluidName, int energy) {
 
         NBTTagCompound toSend = new NBTTagCompound();

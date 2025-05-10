@@ -1,28 +1,17 @@
 package com.raizunne.redstonic.Gui.Container;
 
-import com.raizunne.redstonic.Gui.Slot.SlotAugment;
-import com.raizunne.redstonic.Gui.Slot.SlotFurnace;
-import com.raizunne.redstonic.Item.Drill.DrillAugment;
-import com.raizunne.redstonic.Item.Drill.DrillBody;
-import com.raizunne.redstonic.Item.Drill.DrillHead;
-import com.raizunne.redstonic.Item.ItemBattery;
-import com.raizunne.redstonic.Item.RedstonicDrill;
-import com.raizunne.redstonic.Item.RedstonicSword;
-import com.raizunne.redstonic.Item.Sword.SwordAugment;
-import com.raizunne.redstonic.Item.Sword.SwordBlade;
-import com.raizunne.redstonic.Item.Sword.SwordHandle;
-import com.raizunne.redstonic.TileEntity.TEHyperSmelter;
-import cpw.mods.fml.common.Loader;
-import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.raizunne.redstonic.Gui.Slot.SlotAugment;
+import com.raizunne.redstonic.Gui.Slot.SlotFurnace;
+import com.raizunne.redstonic.TileEntity.TEHyperSmelter;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -61,10 +50,10 @@ public class ContainerHyperSmelter extends Container {
 
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for (int i = 0; i < this.crafters.size(); ++i){
-            ICrafting icrafting = (ICrafting)this.crafters.get(i);
+        for (int i = 0; i < this.crafters.size(); ++i) {
+            ICrafting icrafting = (ICrafting) this.crafters.get(i);
 
-            if(this.lastEnergy!=this.tileentity.getEnergyStored(null)){
+            if (this.lastEnergy != this.tileentity.getEnergyStored(null)) {
                 icrafting.sendProgressBarUpdate(this, 0, this.tileentity.getEnergyStored(null));
             }
 
@@ -75,7 +64,7 @@ public class ContainerHyperSmelter extends Container {
     @Override
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
-        if(par1==0){
+        if (par1 == 0) {
             this.tileentity.setEnergy(par2);
         }
     }
@@ -90,27 +79,28 @@ public class ContainerHyperSmelter extends Container {
         ItemStack itemstack = null;
         Slot slot = (Slot) this.inventorySlots.get(par2);
 
-        if(slot != null && slot.getHasStack()) {
+        if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if(par2 < 35){
-                if(FurnaceRecipes.smelting().getSmeltingResult(itemstack1)!=null) {
+            if (par2 < 35) {
+                if (FurnaceRecipes.smelting()
+                    .getSmeltingResult(itemstack1) != null) {
                     if (!mergeItemStack(itemstack1, 36, 38, false)) {
                         if (!mergeItemStack(itemstack1, 9, 35, false)) {
                             return null;
                         }
                     }
                 }
-            }else if(par2<9){
-                if(!mergeItemStack(itemstack1, 0, 9, false)){
+            } else if (par2 < 9) {
+                if (!mergeItemStack(itemstack1, 0, 9, false)) {
                     return null;
                 }
-            }else if(!mergeItemStack(itemstack1, 0, 35, false)){
+            } else if (!mergeItemStack(itemstack1, 0, 35, false)) {
                 return null;
             }
 
-            if(itemstack1.stackSize == 0) {
+            if (itemstack1.stackSize == 0) {
                 slot.putStack((ItemStack) null);
             } else {
                 slot.onSlotChanged();

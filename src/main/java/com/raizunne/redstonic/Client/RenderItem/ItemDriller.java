@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -15,7 +16,7 @@ public class ItemDriller implements IItemRenderer {
     TileEntitySpecialRenderer render;
     private TileEntity entity;
 
-    public ItemDriller(TileEntitySpecialRenderer renderer, TileEntity entity){
+    public ItemDriller(TileEntitySpecialRenderer renderer, TileEntity entity) {
         this.render = renderer;
         this.entity = entity;
     }
@@ -31,8 +32,8 @@ public class ItemDriller implements IItemRenderer {
     }
 
     @Override
-    public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
-        switch(type){
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        switch (type) {
             case EQUIPPED:
                 GL11.glTranslatef(0F, 0.3F, 0F);
                 break;

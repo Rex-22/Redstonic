@@ -1,13 +1,13 @@
 package com.raizunne.redstonic.Item.IRecipes;
 
-import com.raizunne.redstonic.RedstonicItems;
-import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+
+import com.raizunne.redstonic.RedstonicItems;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -17,40 +17,46 @@ public class ContainerSet implements IRecipe {
 
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
-        return onlyOne(inv, RedstonicItems.RedContainer) && onlyTwoItemsCrafting(inv) && getContainer(inv)!=null && getContainer(inv).stackTagCompound.getInteger("block")==-1 && getOtherStack(inv)!=null && getOtherStack(inv).getItem() instanceof ItemBlock;
+        return onlyOne(inv, RedstonicItems.RedContainer) && onlyTwoItemsCrafting(inv)
+            && getContainer(inv) != null
+            && getContainer(inv).stackTagCompound.getInteger("block") == -1
+            && getOtherStack(inv) != null
+            && getOtherStack(inv).getItem() instanceof ItemBlock;
 
     }
 
-    public boolean onlyOne(InventoryCrafting inv, Item item){
+    public boolean onlyOne(InventoryCrafting inv, Item item) {
         int lol = 0;
-        for(int i=0; i<inv.getSizeInventory(); i++){
-            if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() == item){
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i)
+                .getItem() == item) {
                 lol++;
             }
-            if(lol==2){
+            if (lol == 2) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean onlyTwoItemsCrafting(InventoryCrafting inv){
+    public boolean onlyTwoItemsCrafting(InventoryCrafting inv) {
         int lol = 0;
-        for(int i=0; i<inv.getSizeInventory(); i++){
-            if(inv.getStackInSlot(i)!=null){
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (inv.getStackInSlot(i) != null) {
                 lol++;
             }
-            if(lol>=3){
+            if (lol >= 3) {
                 return false;
             }
         }
-        return lol<=2;
+        return lol <= 2;
     }
 
-    public ItemStack getOtherStack(InventoryCrafting inv){
+    public ItemStack getOtherStack(InventoryCrafting inv) {
         ItemStack otherStack;
-        for(int i=0; i<inv.getSizeInventory(); i++){
-            if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem()!=RedstonicItems.RedContainer){
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i)
+                .getItem() != RedstonicItems.RedContainer) {
                 otherStack = inv.getStackInSlot(i);
                 return otherStack.copy();
             }
@@ -58,10 +64,11 @@ public class ContainerSet implements IRecipe {
         return null;
     }
 
-    public ItemStack getContainer(InventoryCrafting inv){
+    public ItemStack getContainer(InventoryCrafting inv) {
         ItemStack container;
-        for(int i=0; i<inv.getSizeInventory(); i++){
-            if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem()==RedstonicItems.RedContainer){
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i)
+                .getItem() == RedstonicItems.RedContainer) {
                 container = inv.getStackInSlot(i);
                 return container.copy();
             }
@@ -69,10 +76,9 @@ public class ContainerSet implements IRecipe {
         return null;
     }
 
-
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-        if(getContainer(inv)!=null){
+        if (getContainer(inv) != null) {
             ItemStack container = getContainer(inv);
             int blockId = ItemBlock.getIdFromItem(getOtherStack(inv).getItem());
             int blockMeta = getOtherStack(inv).getItemDamage();

@@ -1,7 +1,7 @@
 package com.raizunne.redstonic.Item.Sword;
 
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.Util.SwordUtil;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -9,7 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
+import com.raizunne.redstonic.Redstonic;
+import com.raizunne.redstonic.Util.SwordUtil;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -19,7 +20,7 @@ public class SwordBlade extends Item {
 
     int type;
 
-    public SwordBlade(int type){
+    public SwordBlade(int type) {
         this.type = type;
         setCreativeTab(Redstonic.redTab);
         setMaxStackSize(1);
@@ -29,22 +30,35 @@ public class SwordBlade extends Item {
 
     @Override
     public String getUnlocalizedName() {
-        switch(this.type){
-            case 0: return "IronBlade";
-            case 1: return "DiamondBlade";
-            case 2: return "ElectrumBlade";
-            case 3: return "EnderiumBlade";
-            case 4: return "EnergizedBlade";
-            case 5: return "VibrantBlade";
-            case 6: return "EndBlade";
+        switch (this.type) {
+            case 0:
+                return "IronBlade";
+            case 1:
+                return "DiamondBlade";
+            case 2:
+                return "ElectrumBlade";
+            case 3:
+                return "EnderiumBlade";
+            case 4:
+                return "EnergizedBlade";
+            case 5:
+                return "VibrantBlade";
+            case 6:
+                return "EndBlade";
         }
         return "UnknownBlade";
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
-        list.add(EnumChatFormatting.RED + "" + SwordUtil.getDamage(new ItemStack(this))/2 + " Heart " + EnumChatFormatting.GRAY + "Base Damage.");
-        if(stack.stackTagCompound!=null && stack.stackTagCompound.getInteger("totalKills")>0)list.add("Kills: " + stack.stackTagCompound.getInteger("totalKills"));
+        list.add(
+            EnumChatFormatting.RED + ""
+                + SwordUtil.getDamage(new ItemStack(this)) / 2
+                + " Heart "
+                + EnumChatFormatting.GRAY
+                + "Base Damage.");
+        if (stack.stackTagCompound != null && stack.stackTagCompound.getInteger("totalKills") > 0)
+            list.add("Kills: " + stack.stackTagCompound.getInteger("totalKills"));
     }
 
     IIcon[] icon;

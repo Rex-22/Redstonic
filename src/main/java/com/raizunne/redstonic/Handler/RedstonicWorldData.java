@@ -13,7 +13,7 @@ public class RedstonicWorldData extends WorldSavedData {
     private NBTTagCompound data = new NBTTagCompound();
     public static String id = "Redstonic";
 
-    public RedstonicWorldData(){
+    public RedstonicWorldData() {
         super(id);
     }
 
@@ -35,7 +35,7 @@ public class RedstonicWorldData extends WorldSavedData {
         return data;
     }
 
-    public void resetData(){
+    public void resetData() {
         data = new NBTTagCompound();
     }
 
@@ -43,13 +43,13 @@ public class RedstonicWorldData extends WorldSavedData {
         this.data = data;
     }
 
-    public static void set(RedstonicWorldData data, World world){
+    public static void set(RedstonicWorldData data, World world) {
         world.setItemData(id, data);
     }
 
-    public static RedstonicWorldData get(World world){
-        RedstonicWorldData data = ((RedstonicWorldData)world.loadItemData(RedstonicWorldData.class, id));
-        if(data==null){
+    public static RedstonicWorldData get(World world) {
+        RedstonicWorldData data = ((RedstonicWorldData) world.loadItemData(RedstonicWorldData.class, id));
+        if (data == null) {
             data = new RedstonicWorldData();
             world.setItemData(id, data);
         }

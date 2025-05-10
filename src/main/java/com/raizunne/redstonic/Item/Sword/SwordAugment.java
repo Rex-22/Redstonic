@@ -1,14 +1,14 @@
 package com.raizunne.redstonic.Item.Sword;
 
-import com.raizunne.redstonic.Util.Util;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import org.lwjgl.input.Keyboard;
 
-import java.util.List;
+import com.raizunne.redstonic.Util.Util;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -18,7 +18,7 @@ public class SwordAugment extends Item {
 
     int type;
 
-    public SwordAugment(int type){
+    public SwordAugment(int type) {
         this.type = type;
         setMaxStackSize(1);
         setUnlocalizedName(getUnlocalizedName());
@@ -27,11 +27,15 @@ public class SwordAugment extends Item {
 
     @Override
     public String getUnlocalizedName() {
-        switch(type){
-            case 1: return "BlazerSwordAugment";
-            case 2: return "FortuitousSwordAugment";
-            case 3: return "BerserkSwordAugment";
-            case 4: return "BerserkIISwordAugment";
+        switch (type) {
+            case 1:
+                return "BlazerSwordAugment";
+            case 2:
+                return "FortuitousSwordAugment";
+            case 3:
+                return "BerserkSwordAugment";
+            case 4:
+                return "BerserkIISwordAugment";
         }
         return "UnknownAugment";
     }
@@ -60,11 +64,11 @@ public class SwordAugment extends Item {
 
     @Override
     public IIcon getIconIndex(ItemStack p_77650_1_) {
-        return icon[type-1];
+        return icon[type - 1];
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        return icon[type-1];
+        return icon[type - 1];
     }
 }

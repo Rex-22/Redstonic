@@ -1,11 +1,12 @@
 package com.raizunne.redstonic.Gui.Container;
 
-import com.raizunne.redstonic.TileEntity.TEDriller;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.raizunne.redstonic.TileEntity.TEDriller;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -15,7 +16,7 @@ public class ContainerDriller extends Container {
 
     public TEDriller tileentity;
 
-    public ContainerDriller(InventoryPlayer invplayer, TEDriller te){
+    public ContainerDriller(InventoryPlayer invplayer, TEDriller te) {
         this.tileentity = te;
 
         for (int x = 0; x < 9; x++) {
@@ -42,4 +43,3 @@ public class ContainerDriller extends Container {
     }
 
 }
-

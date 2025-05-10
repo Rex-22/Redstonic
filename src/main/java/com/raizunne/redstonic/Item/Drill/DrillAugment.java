@@ -1,9 +1,7 @@
 package com.raizunne.redstonic.Item.Drill;
 
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.RedstonicItems;
-import com.raizunne.redstonic.Util.DrillUtil;
-import com.raizunne.redstonic.Util.Util;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -12,13 +10,15 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import org.lwjgl.input.Keyboard;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.List;
+import com.raizunne.redstonic.Redstonic;
+import com.raizunne.redstonic.RedstonicItems;
+import com.raizunne.redstonic.Util.DrillUtil;
+import com.raizunne.redstonic.Util.Util;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -33,7 +33,7 @@ public class DrillAugment extends Item {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
         String[] info = Util.getAugmentInfo(type, stack);
         String hotswapHead = "Empty";
-        if(stack.stackTagCompound!=null) {
+        if (stack.stackTagCompound != null) {
             hotswapHead = DrillUtil.getDrillHeadName(stack.stackTagCompound.getInteger("hotswapHead"));
         }
         if (info != null) {
@@ -43,7 +43,7 @@ public class DrillAugment extends Item {
         }
     }
 
-    public DrillAugment(int type){
+    public DrillAugment(int type) {
         this.type = type;
         setCreativeTab(Redstonic.redTab);
         setMaxStackSize(1);
@@ -53,25 +53,32 @@ public class DrillAugment extends Item {
 
     @Override
     public String getUnlocalizedName() {
-        switch(type){
-            case 0: return "SpeedAugment";
-            case 1: return "EnergyAugment";
-            case 2: return "HotswapAugment";
-            case 3: return "BlockAugment";
-            case 4: return "MagnetAugment";
-            case 5: return "SpeedIIAugment";
-            default: return "UnknownAugment";
+        switch (type) {
+            case 0:
+                return "SpeedAugment";
+            case 1:
+                return "EnergyAugment";
+            case 2:
+                return "HotswapAugment";
+            case 3:
+                return "BlockAugment";
+            case 4:
+                return "MagnetAugment";
+            case 5:
+                return "SpeedIIAugment";
+            default:
+                return "UnknownAugment";
         }
     }
 
     @Override
     public void onUpdate(ItemStack stack, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
-        if(stack.stackTagCompound==null && type==2){
+        if (stack.stackTagCompound == null && type == 2) {
             stack.stackTagCompound = new NBTTagCompound();
             stack.stackTagCompound.setInteger("hotswapHead", -1);
         }
-        if(type==2){
-//            System.out.println(stack.stackTagCompound.getInteger("hotswapHead"));
+        if (type == 2) {
+            // System.out.println(stack.stackTagCompound.getInteger("hotswapHead"));
         }
     }
 
@@ -102,8 +109,8 @@ public class DrillAugment extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if(stack.getItem()==RedstonicItems.HotswapAugment && stack.stackTagCompound!=null) {
-            if(stack.stackTagCompound.getInteger("hotswapHead")!=-1)
+        if (stack.getItem() == RedstonicItems.HotswapAugment && stack.stackTagCompound != null) {
+            if (stack.stackTagCompound.getInteger("hotswapHead") != -1)
                 player.setItemInUse(stack, getMaxItemUseDuration(stack));
         }
         return stack;
@@ -111,16 +118,16 @@ public class DrillAugment extends Item {
 
     @Override
     public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player) {
-        if(type==2 && stack.stackTagCompound!=null) {
+        if (type == 2 && stack.stackTagCompound != null) {
             ItemStack hotswapHead = null;
             hotswapHead = DrillUtil.getDrillHead(stack.stackTagCompound.getInteger("hotswapHead"));
             stack.stackTagCompound.setBoolean("set", false);
             stack.stackTagCompound.setInteger("hotswapHead", -1);
-            if(player.inventory.addItemStackToInventory(hotswapHead)){
+            if (player.inventory.addItemStackToInventory(hotswapHead)) {
                 player.inventory.addItemStackToInventory(hotswapHead);
-            }else{
+            } else {
                 EntityItem item = new EntityItem(world, player.posX, player.posY, player.posZ, hotswapHead);
-                if(!world.isRemote){
+                if (!world.isRemote) {
                     world.spawnEntityInWorld(item);
                 }
             }

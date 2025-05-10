@@ -1,15 +1,14 @@
 package com.raizunne.redstonic.Block;
 
-import com.raizunne.redstonic.Redstonic;
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.raizunne.redstonic.Redstonic;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -19,11 +18,11 @@ public class BlockCompressed extends Block {
 
     int type;
 
-    public BlockCompressed(Material material){
+    public BlockCompressed(Material material) {
         super(material);
     }
 
-    public BlockCompressed(int type){
+    public BlockCompressed(int type) {
         super(Material.iron);
         this.type = type;
         setBlockTextureName(getTexture());
@@ -45,18 +44,22 @@ public class BlockCompressed extends Block {
         return list;
     }
 
-    public String getBlockName(){
-        switch(type){
-            case 0: return "blockGlowSteel";
-            case 1: return "blockVibrantium";
+    public String getBlockName() {
+        switch (type) {
+            case 0:
+                return "blockGlowSteel";
+            case 1:
+                return "blockVibrantium";
         }
         return "unknownCompressedBlock";
     }
 
-    public String getTexture(){
-        switch(type){
-            case 0: return "redstonic:blockGlowSteel";
-            case 1: return "redstonic:blockVibrantium";
+    public String getTexture() {
+        switch (type) {
+            case 0:
+                return "redstonic:blockGlowSteel";
+            case 1:
+                return "redstonic:blockVibrantium";
         }
         return "false";
     }

@@ -1,13 +1,14 @@
 package com.raizunne.redstonic.Item.Sword;
 
-import com.raizunne.redstonic.Redstonic;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
+import com.raizunne.redstonic.Redstonic;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -17,7 +18,7 @@ public class SwordHandle extends Item {
 
     int type;
 
-    public SwordHandle(int type){
+    public SwordHandle(int type) {
         this.type = type;
         setCreativeTab(Redstonic.redTab);
         setUnlocalizedName(getUnlocalizedName());
@@ -27,28 +28,49 @@ public class SwordHandle extends Item {
 
     @Override
     public String getUnlocalizedName() {
-        switch(this.type){
-            case 0: return "WoodHandle";
-            case 1: return "IronHandle";
-            case 2: return "ElectrumHandle";
-            case 3: return "EnderiumHandle";
-            case 4: return "EnergizedHandle";
-            case 5: return "VibrantHandle";
-            case 6: return "EndHandle";
+        switch (this.type) {
+            case 0:
+                return "WoodHandle";
+            case 1:
+                return "IronHandle";
+            case 2:
+                return "ElectrumHandle";
+            case 3:
+                return "EnderiumHandle";
+            case 4:
+                return "EnergizedHandle";
+            case 5:
+                return "VibrantHandle";
+            case 6:
+                return "EndHandle";
         }
         return "UnknownHandle";
     }
 
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
-        switch(this.type){
-            case 0: list.add("Max Augments: 0"); break;
-            case 1: list.add("Max Augments: 1"); break;
-            case 2: list.add("Max Augments: 2"); break;
-            case 3: list.add("Max Augments: 3"); break;
-            case 4: list.add("Max Augments: 2"); break;
-            case 5: list.add("Max Augments: 3"); break;
-            case 6: list.add("Max Augments: 0"); break;
+        switch (this.type) {
+            case 0:
+                list.add("Max Augments: 0");
+                break;
+            case 1:
+                list.add("Max Augments: 1");
+                break;
+            case 2:
+                list.add("Max Augments: 2");
+                break;
+            case 3:
+                list.add("Max Augments: 3");
+                break;
+            case 4:
+                list.add("Max Augments: 2");
+                break;
+            case 5:
+                list.add("Max Augments: 3");
+                break;
+            case 6:
+                list.add("Max Augments: 0");
+                break;
         }
     }
 

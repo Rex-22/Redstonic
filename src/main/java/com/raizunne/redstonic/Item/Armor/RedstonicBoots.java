@@ -1,20 +1,11 @@
 package com.raizunne.redstonic.Item.Armor;
 
-import cofh.api.energy.IEnergyContainerItem;
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.Util.Lang;
-import net.minecraft.entity.Entity;
+import java.util.List;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ISpecialArmor;
-
-import java.util.List;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -33,7 +24,8 @@ public class RedstonicBoots extends RedArmorBase {
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+        int slot) {
         return super.getProperties(player, armor, source, damage, slot);
     }
 }

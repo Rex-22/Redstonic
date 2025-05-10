@@ -1,7 +1,7 @@
 package com.raizunne.redstonic.Gui.Container;
 
-import com.raizunne.redstonic.Gui.GuiMessanger;
-import com.raizunne.redstonic.Item.IInventories.IInvMessenger;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,8 +9,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 
-import java.util.List;
-
+import com.raizunne.redstonic.Gui.GuiMessanger;
+import com.raizunne.redstonic.Item.IInventories.IInvMessenger;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -22,7 +22,7 @@ public class ContainerMessenger extends Container {
     IInventory inventory;
     GuiMessanger.Page page;
 
-    public ContainerMessenger(InventoryPlayer invplayer, ItemStack stack){
+    public ContainerMessenger(InventoryPlayer invplayer, ItemStack stack) {
         this.stack = stack;
         this.page = GuiMessanger.Page.valueOf(stack.stackTagCompound.getString("page"));
         inventory = new IInvMessenger(stack);
@@ -36,36 +36,39 @@ public class ContainerMessenger extends Container {
             }
         }
 
-        for(int y=0; y<3; y++){
-            for(int x=0; x<3; x++){
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
                 int xStart;
-                if(stack.stackTagCompound.getString("page").equals(GuiMessanger.Page.SEND_PACKAGE.toString())){
+                if (stack.stackTagCompound.getString("page")
+                    .equals(GuiMessanger.Page.SEND_PACKAGE.toString())) {
                     xStart = 10;
-                }else{
+                } else {
                     xStart = -1;
                 }
-                addSlotToContainer(new Slot(inventory, x+(y*3), xStart+8+18*x, 1+(y*18)));
+                addSlotToContainer(new Slot(inventory, x + (y * 3), xStart + 8 + 18 * x, 1 + (y * 18)));
             }
         }
     }
 
-    public void pageChanged(GuiMessanger.Page page){
-        if(page.equals(GuiMessanger.Page.SEND_PACKAGE)){
-            int x=0; int y=0;
-            for (Slot slot : (List<Slot>)inventorySlots) {
-                y = x==3 ? y+1 : 0;
+    public void pageChanged(GuiMessanger.Page page) {
+        if (page.equals(GuiMessanger.Page.SEND_PACKAGE)) {
+            int x = 0;
+            int y = 0;
+            for (Slot slot : (List<Slot>) inventorySlots) {
+                y = x == 3 ? y + 1 : 0;
                 if ((slot.inventory instanceof IInvMessenger)) {
-                    slot.xDisplayPosition = 8+18*x;
-                    slot.yDisplayPosition = y*18;
+                    slot.xDisplayPosition = 8 + 18 * x;
+                    slot.yDisplayPosition = y * 18;
                     slot.putStack(new ItemStack(Items.nether_star));
-//                    System.out.println(slot.xDisplayPosition + " / " + slot.yDisplayPosition);
-//                    System.out.println(this.page + "   -   " + x + " / " + y);
+                    // System.out.println(slot.xDisplayPosition + " / " + slot.yDisplayPosition);
+                    // System.out.println(this.page + " - " + x + " / " + y);
                     x++;
                 }
             }
-            x=0; y=0;
-        }else{
-            for (Slot slot : (List<Slot>)inventorySlots) {
+            x = 0;
+            y = 0;
+        } else {
+            for (Slot slot : (List<Slot>) inventorySlots) {
                 if ((slot.inventory instanceof IInvMessenger)) {
                     slot.xDisplayPosition = 999999;
                 }
@@ -77,12 +80,13 @@ public class ContainerMessenger extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         this.stack = Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem();
-        if(stack==null){
+        if (stack == null) {
             Minecraft.getMinecraft().thePlayer.closeScreen();
             return;
         }
-//        System.out.println(this.stack.stackTagCompound.getString("page") + " / " + this.page.toString());
-        if(!this.stack.stackTagCompound.getString("page").equals(page.toString())){
+        // System.out.println(this.stack.stackTagCompound.getString("page") + " / " + this.page.toString());
+        if (!this.stack.stackTagCompound.getString("page")
+            .equals(page.toString())) {
             this.page = GuiMessanger.Page.valueOf(this.stack.stackTagCompound.getString("page"));
             pageChanged(GuiMessanger.Page.valueOf(this.stack.stackTagCompound.getString("page")));
         }

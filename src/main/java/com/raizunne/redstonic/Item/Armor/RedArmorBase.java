@@ -1,8 +1,7 @@
 package com.raizunne.redstonic.Item.Armor;
 
-import cofh.api.energy.IEnergyContainerItem;
-import com.raizunne.redstonic.Redstonic;
-import com.raizunne.redstonic.Util.Lang;
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +13,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
-import java.util.List;
+import com.raizunne.redstonic.Redstonic;
+import com.raizunne.redstonic.Util.Lang;
+
+import cofh.api.energy.IEnergyContainerItem;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -26,22 +28,22 @@ public class RedArmorBase extends ItemArmor implements ISpecialArmor, IEnergyCon
     int maxEnergy = 320000;
     int maxInput = 3200;
 
-    public RedArmorBase(int armorType, String name){
+    public RedArmorBase(int armorType, String name) {
         this(name, armorType);
     }
 
-    public RedArmorBase(String name, int type){
+    public RedArmorBase(String name, int type) {
         super(Redstonic.RedstonicMaterial, 0, type);
         this.setUnlocalizedName(name);
         this.setMaxStackSize(1);
-        this.setTextureName("redstonic:Armor/"+name);
+        this.setTextureName("redstonic:Armor/" + name);
         this.setMaxDamage(80);
         this.setCreativeTab(Redstonic.redTab);
     }
 
     @Override
     public void onUpdate(ItemStack stack, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
-        if(stack.stackTagCompound==null){
+        if (stack.stackTagCompound == null) {
             stack.stackTagCompound = new NBTTagCompound();
             stack.stackTagCompound.setInteger("Energy", 0);
             stack.stackTagCompound.setInteger("maxEnergy", getMaxEnergy(stack));
@@ -52,23 +54,30 @@ public class RedArmorBase extends ItemArmor implements ISpecialArmor, IEnergyCon
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
         NBTTagCompound tag = stack.stackTagCompound;
-        if(tag!=null){
+        if (tag != null) {
             int energy = stack.stackTagCompound.getInteger("Energy");
             int maxEnergy = getMaxEnergy(stack);
-            list.add(EnumChatFormatting.GREEN+"Energy: " + EnumChatFormatting.GRAY + Lang.addComas(energy) + "/" + Lang.addComas(maxEnergy) + " RF");
+            list.add(
+                EnumChatFormatting.GREEN + "Energy: "
+                    + EnumChatFormatting.GRAY
+                    + Lang.addComas(energy)
+                    + "/"
+                    + Lang.addComas(maxEnergy)
+                    + " RF");
         }
     }
 
-    public int getMaxEnergy(ItemStack stack){
+    public int getMaxEnergy(ItemStack stack) {
         return maxEnergy;
     }
 
-    public int getMaxInput(){
+    public int getMaxInput() {
         return maxInput;
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+        int slot) {
         return null;
     }
 
@@ -120,11 +129,11 @@ public class RedArmorBase extends ItemArmor implements ISpecialArmor, IEnergyCon
         return energyExtracted;
     }
 
-    public void fixDamage(ItemStack stack){
-        double modifier = (double)80/getMaxEnergy(stack);
-        if(getMaxEnergy(stack)!=-1) {
+    public void fixDamage(ItemStack stack) {
+        double modifier = (double) 80 / getMaxEnergy(stack);
+        if (getMaxEnergy(stack) != -1) {
             stack.setItemDamage((int) (80 - stack.stackTagCompound.getInteger("Energy") * modifier));
-        }else{
+        } else {
             stack.setItemDamage(0);
         }
     }

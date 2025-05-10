@@ -1,17 +1,14 @@
 package com.raizunne.redstonic.Gui;
 
-import com.raizunne.redstonic.Gui.Button.ScrollBar;
-import com.raizunne.redstonic.RedstonicItems;
-import com.raizunne.redstonic.Util.DrillUtil;
-import cpw.mods.fml.client.config.GuiSlider;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiOptionSlider;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import com.raizunne.redstonic.Gui.Button.ScrollBar;
+
+import cpw.mods.fml.client.config.GuiSlider;
 
 /**
  * Created by Raizunne as a part of GuiEndDrill
@@ -26,7 +23,7 @@ public class GuiEndDrill extends GuiScreen {
     public final int xSizeofTexture = 176;
     public final int ySizeofTexture = 65;
 
-    public GuiEndDrill(EntityPlayer player){
+    public GuiEndDrill(EntityPlayer player) {
         this.player = player;
     }
 
@@ -46,7 +43,7 @@ public class GuiEndDrill extends GuiScreen {
     public void initGui() {
         int posX = (width - xSizeofTexture) / 2;
         int posY = (height - ySizeofTexture) / 2;
-        GuiSlider slider = new GuiSlider(0, posX+18, posY + 30, 140, 20, "Speed ", "%", 0, 100, speed, true, true);
+        GuiSlider slider = new GuiSlider(0, posX + 18, posY + 30, 140, 20, "Speed ", "%", 0, 100, speed, true, true);
         ScrollBar bar = new ScrollBar(1, 20, 40, 74, 10, 20, "FUCK");
 
         buttonList.add(bar);

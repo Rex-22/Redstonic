@@ -1,15 +1,12 @@
 package com.raizunne.redstonic.Util;
 
+import java.io.*;
+
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
-import net.minecraft.world.storage.SaveHandlerMP;
-import net.minecraftforge.common.DimensionManager;
-
-import java.io.*;
 
 /**
  * Created by Raizunne as a part of Redstonic
@@ -17,11 +14,11 @@ import java.io.*;
  */
 public class NBTHelper {
 
-    public static NBTTagCompound getNBTFromUUID(String UUID){
+    public static NBTTagCompound getNBTFromUUID(String UUID) {
         SaveHandler saveHandler = (SaveHandler) MinecraftServer.getServer().worldServers[0].getSaveHandler();
-        try{
+        try {
             File playerDir = new File(saveHandler.getWorldDirectory(), "playerdata");
-            File playerFile = new File(playerDir, UUID+".dat");
+            File playerFile = new File(playerDir, UUID + ".dat");
             return CompressedStreamTools.readCompressed(new FileInputStream(playerFile));
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,14 +26,14 @@ public class NBTHelper {
         return null;
     }
 
-    public static void writeNBTFromUUID(NBTTagCompound tag, String UUID){
+    public static void writeNBTFromUUID(NBTTagCompound tag, String UUID) {
         ISaveHandler saveHandler = MinecraftServer.getServer().worldServers[0].getSaveHandler();
-        try{
+        try {
             File playerDir = new File(saveHandler.getWorldDirectory(), "playerdata");
-            File temp = new File(playerDir, UUID+".dat.tmp");
-            File playerFile = new File(playerDir, UUID+".dat");
+            File temp = new File(playerDir, UUID + ".dat.tmp");
+            File playerFile = new File(playerDir, UUID + ".dat");
             CompressedStreamTools.safeWrite(tag, temp);
-            if(playerFile.exists()){
+            if (playerFile.exists()) {
                 playerFile.delete();
             }
             temp.renameTo(playerFile);
