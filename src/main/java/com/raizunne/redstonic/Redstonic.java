@@ -36,7 +36,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = Redstonic.MODID, version = Tags.VERSION, name = "Redstonic", acceptedMinecraftVersions = "[1.7.10]")
+@Mod(modid = Redstonic.MODID, version = Tags.VERSION, name = "Redstonic", acceptedMinecraftVersions = "[1.7.10]", dependencies = "required-after:Forge;after:EnderIO;")
 public class Redstonic {
 
     public static final String MODID = "Redstonic";
